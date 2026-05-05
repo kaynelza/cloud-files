@@ -1,0 +1,46 @@
+openapi: "3.0.3"
+info:
+  title: "Cloud Files"
+  version: 0.1.0
+servers:
+  - url: http://localhost:8080
+paths:
+  /sign-up:
+    post:
+      summary: Register new user
+      tags:
+      requestBody:
+        description: "new user verification"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+              required: [email,password]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                    format: access_token
+                  refresh_token:
+                    type: string
+                    format: refresh_token
+                required: [ access_token,refresh_token ]
+
+
+
+
+
