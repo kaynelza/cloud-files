@@ -1,14 +1,17 @@
-openapi: "3.0.3"
+openapi: 3.0.3
 info:
-  title: "Cloud Files"
+  title: Cloud Storage API
   version: 0.1.0
+security:
+  - BearerAuth: []
 servers:
-  - url: http://localhost:8080
+  - url: http://Localhost:8080
 paths:
-  /sign-up:
+  /api/v1/auth/sign-up:
     post:
       summary: Register new user
       tags:
+        - Auth
       requestBody:
         description: "new user verification"
         required: true
@@ -19,11 +22,9 @@ paths:
               properties:
                 email:
                   type: string
-                  format: email
                 password:
                   type: string
-                  format: password
-              required: [email,password]
+              required: [email, password]
       responses:
         '200':
           description: OK
@@ -34,13 +35,433 @@ paths:
                 properties:
                   access_token:
                     type: string
-                    format: access_token
                   refresh_token:
                     type: string
-                    format: refresh_token
-                required: [ access_token,refresh_token ]
-
-
-
-
-
+                required: [access_token, refresh_token]
+        default:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/auth/sign-in:
+    post:
+      summary: Login
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required: [email, password]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  refresh_token:
+                    type: string
+                required: [access_token, refresh_token]
+        default:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/auth/refresh:
+    post:
+      summary: Refresh token pair
+      tags:
+        - Auth
+      parameters:
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  refresh_token:
+                    type: string
+                required: [access_token, refresh_token]
+        default:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/cloud/storage/my:
+    get:
+      summary: List user's files (paginated)
+      tags:
+        - Cloud Storage
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 100
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  files:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id: { type: string }
+                        name: { type: string }
+                        size: { type: integer }
+                        mime_type: { type: string }
+                        file_path: { type: string }
+                        created_at: { type: string }
+                  total: { type: integer }
+                  used_gbs: { type: number }
+        default:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/cloud/storage/my/{file}/info:
+    get:
+      summary: Get file metadata by ID or path
+      tags:
+        - Cloud Storage
+      parameters:
+        - name: file
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id: { type: string }
+                  name: { type: string }
+                  size: { type: integer }
+                  mime_type: { type: string }
+                  file_path: { type: string }
+                  created_at: { type: string }
+        default:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/cloud/storage/my/upload:
+    post:
+      summary: Create upload session
+      tags:
+        - Cloud Storage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: { type: string }
+                size: { type: integer }
+                mime_type: { type: string }
+                file_path: { type: string }
+              required: [name, size, mime_type, file_path]
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  upload_id: { type: string }
+                  chunk_size: { type: integer }
+                  expires_at: { type: string }
+        "400":
+          description: Invalid body
+          content: 
+            application/json:
+              schema: 
+                type: object
+                required: [message]
+                properties: 
+                  message:
+                    type: string
+        "507":
+          description: User storage quota exceeded
+          content:
+            application/json:
+              schema: 
+                type: object
+                required: [message]
+                properties:
+                  message:
+                    type: string
+        default:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/cloud/storage/my/upload/{upload_id}:
+    put:
+      summary: Upload a single chunk
+      tags:
+        - Cloud Storage
+      parameters:
+        - name: upload_id
+          in: path
+          required: true
+          schema: { type: string }
+        - name: Content-Range
+          in: header
+          required: true
+          schema: { type: string }
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  upload_id: { type: string }
+                  received_bytes: { type: integer }
+                  total_bytes: { type: integer }
+        "404":
+          description: Upload session not found or expired
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [message]
+                properties:
+                  message:
+                    type: string
+        "409":
+          description: Chunk range overlaps with already received
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [message]
+                properties:
+                  message:
+                    type: string
+        "413":
+          description: Chunk exceeds expected chunk size
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [message]
+                properties:
+                  message:
+                    type: string
+        "416":
+          description: Invalid Content-Range
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [message]
+                properties:
+                  message:
+                    type: string
+        default:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    get:
+      summary: Get upload session status
+      tags:
+        - Cloud Storage
+      parameters:
+        - name: upload_id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  upload_id: { type: string }
+                  name: { type: string }
+                  size: { type: integer }
+                  received_bytes: { type: integer }
+                  received_ranges:
+                    type: array
+                    items: { type: string }
+                  chunk_size: { type: integer }
+                  expires_at: { type: string }
+        "404":
+          description: Upload session not found or expired
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [message]
+                properties:
+                  message:
+                    type: string
+        default:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/cloud/storage/my/upload/{upload_id}/complete:
+    post:
+      summary: Finalize upload
+      tags:
+        - Cloud Storage
+      parameters:
+        - name: upload_id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id: { type: string }
+                  name: { type: string }
+                  size: { type: integer }
+                  mime_type: { type: string }
+                  file_path: { type: string }
+                  created_at: { type: string }
+        "404":
+          description: Upload session not found or expired
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [message]
+                properties:
+                  message:
+                    type: string
+        "409":
+          description: Not all bytes received, upload incomplete
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [message]
+                properties:
+                  message:
+                    type: string
+        default:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/cloud/storage/my/download/{id}:
+    get:
+      summary: Download file by ID
+      tags:
+        - Cloud Storage
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        "403":
+          description: File does not belong to the current user
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [message]
+                properties:
+                  message:
+                    type: string
+        "404":
+          description: File not found
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [message]
+                properties:
+                  message:
+                    type: string
+        default:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    ErrorResponse: # Название схемы, на которую мы ссылаемся
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
