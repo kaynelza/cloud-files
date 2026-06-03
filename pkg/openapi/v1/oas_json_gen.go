@@ -778,40 +778,28 @@ func (s *APIV1CloudStorageMyFileInfoGetOK) Encode(e *jx.Encoder) {
 // encodeFields encodes fields.
 func (s *APIV1CloudStorageMyFileInfoGetOK) encodeFields(e *jx.Encoder) {
 	{
-		if s.ID.Set {
-			e.FieldStart("id")
-			s.ID.Encode(e)
-		}
+		e.FieldStart("id")
+		e.Str(s.ID)
 	}
 	{
-		if s.Name.Set {
-			e.FieldStart("name")
-			s.Name.Encode(e)
-		}
+		e.FieldStart("name")
+		e.Str(s.Name)
 	}
 	{
-		if s.Size.Set {
-			e.FieldStart("size")
-			s.Size.Encode(e)
-		}
+		e.FieldStart("size")
+		e.Int(s.Size)
 	}
 	{
-		if s.MimeType.Set {
-			e.FieldStart("mime_type")
-			s.MimeType.Encode(e)
-		}
+		e.FieldStart("mime_type")
+		e.Str(s.MimeType)
 	}
 	{
-		if s.FilePath.Set {
-			e.FieldStart("file_path")
-			s.FilePath.Encode(e)
-		}
+		e.FieldStart("file_path")
+		e.Str(s.FilePath)
 	}
 	{
-		if s.CreatedAt.Set {
-			e.FieldStart("created_at")
-			s.CreatedAt.Encode(e)
-		}
+		e.FieldStart("created_at")
+		e.Str(s.CreatedAt)
 	}
 }
 
@@ -829,13 +817,16 @@ func (s *APIV1CloudStorageMyFileInfoGetOK) Decode(d *jx.Decoder) error {
 	if s == nil {
 		return errors.New("invalid: unable to decode APIV1CloudStorageMyFileInfoGetOK to nil")
 	}
+	var requiredBitSet [1]uint8
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
 		case "id":
+			requiredBitSet[0] |= 1 << 0
 			if err := func() error {
-				s.ID.Reset()
-				if err := s.ID.Decode(d); err != nil {
+				v, err := d.Str()
+				s.ID = string(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -843,9 +834,11 @@ func (s *APIV1CloudStorageMyFileInfoGetOK) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"id\"")
 			}
 		case "name":
+			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
-				s.Name.Reset()
-				if err := s.Name.Decode(d); err != nil {
+				v, err := d.Str()
+				s.Name = string(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -853,9 +846,11 @@ func (s *APIV1CloudStorageMyFileInfoGetOK) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"name\"")
 			}
 		case "size":
+			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
-				s.Size.Reset()
-				if err := s.Size.Decode(d); err != nil {
+				v, err := d.Int()
+				s.Size = int(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -863,9 +858,11 @@ func (s *APIV1CloudStorageMyFileInfoGetOK) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"size\"")
 			}
 		case "mime_type":
+			requiredBitSet[0] |= 1 << 3
 			if err := func() error {
-				s.MimeType.Reset()
-				if err := s.MimeType.Decode(d); err != nil {
+				v, err := d.Str()
+				s.MimeType = string(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -873,9 +870,11 @@ func (s *APIV1CloudStorageMyFileInfoGetOK) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"mime_type\"")
 			}
 		case "file_path":
+			requiredBitSet[0] |= 1 << 4
 			if err := func() error {
-				s.FilePath.Reset()
-				if err := s.FilePath.Decode(d); err != nil {
+				v, err := d.Str()
+				s.FilePath = string(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -883,9 +882,11 @@ func (s *APIV1CloudStorageMyFileInfoGetOK) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"file_path\"")
 			}
 		case "created_at":
+			requiredBitSet[0] |= 1 << 5
 			if err := func() error {
-				s.CreatedAt.Reset()
-				if err := s.CreatedAt.Decode(d); err != nil {
+				v, err := d.Str()
+				s.CreatedAt = string(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -898,6 +899,38 @@ func (s *APIV1CloudStorageMyFileInfoGetOK) Decode(d *jx.Decoder) error {
 		return nil
 	}); err != nil {
 		return errors.Wrap(err, "decode APIV1CloudStorageMyFileInfoGetOK")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b00111111,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfAPIV1CloudStorageMyFileInfoGetOK) {
+					name = jsonFieldsNameOfAPIV1CloudStorageMyFileInfoGetOK[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
 	}
 
 	return nil
@@ -936,16 +969,12 @@ func (s *APIV1CloudStorageMyGetOK) encodeFields(e *jx.Encoder) {
 		}
 	}
 	{
-		if s.Total.Set {
-			e.FieldStart("total")
-			s.Total.Encode(e)
-		}
+		e.FieldStart("total")
+		e.Int(s.Total)
 	}
 	{
-		if s.UsedGbs.Set {
-			e.FieldStart("used_gbs")
-			s.UsedGbs.Encode(e)
-		}
+		e.FieldStart("used_gbs")
+		e.Float64(s.UsedGbs)
 	}
 }
 
@@ -960,6 +989,7 @@ func (s *APIV1CloudStorageMyGetOK) Decode(d *jx.Decoder) error {
 	if s == nil {
 		return errors.New("invalid: unable to decode APIV1CloudStorageMyGetOK to nil")
 	}
+	var requiredBitSet [1]uint8
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
@@ -981,9 +1011,11 @@ func (s *APIV1CloudStorageMyGetOK) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"files\"")
 			}
 		case "total":
+			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
-				s.Total.Reset()
-				if err := s.Total.Decode(d); err != nil {
+				v, err := d.Int()
+				s.Total = int(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -991,9 +1023,11 @@ func (s *APIV1CloudStorageMyGetOK) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"total\"")
 			}
 		case "used_gbs":
+			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
-				s.UsedGbs.Reset()
-				if err := s.UsedGbs.Decode(d); err != nil {
+				v, err := d.Float64()
+				s.UsedGbs = float64(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -1006,6 +1040,38 @@ func (s *APIV1CloudStorageMyGetOK) Decode(d *jx.Decoder) error {
 		return nil
 	}); err != nil {
 		return errors.Wrap(err, "decode APIV1CloudStorageMyGetOK")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b00000110,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfAPIV1CloudStorageMyGetOK) {
+					name = jsonFieldsNameOfAPIV1CloudStorageMyGetOK[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
 	}
 
 	return nil
@@ -1034,40 +1100,28 @@ func (s *APIV1CloudStorageMyGetOKFilesItem) Encode(e *jx.Encoder) {
 // encodeFields encodes fields.
 func (s *APIV1CloudStorageMyGetOKFilesItem) encodeFields(e *jx.Encoder) {
 	{
-		if s.ID.Set {
-			e.FieldStart("id")
-			s.ID.Encode(e)
-		}
+		e.FieldStart("id")
+		e.Str(s.ID)
 	}
 	{
-		if s.Name.Set {
-			e.FieldStart("name")
-			s.Name.Encode(e)
-		}
+		e.FieldStart("name")
+		e.Str(s.Name)
 	}
 	{
-		if s.Size.Set {
-			e.FieldStart("size")
-			s.Size.Encode(e)
-		}
+		e.FieldStart("size")
+		e.Int(s.Size)
 	}
 	{
-		if s.MimeType.Set {
-			e.FieldStart("mime_type")
-			s.MimeType.Encode(e)
-		}
+		e.FieldStart("mime_type")
+		e.Str(s.MimeType)
 	}
 	{
-		if s.FilePath.Set {
-			e.FieldStart("file_path")
-			s.FilePath.Encode(e)
-		}
+		e.FieldStart("file_path")
+		e.Str(s.FilePath)
 	}
 	{
-		if s.CreatedAt.Set {
-			e.FieldStart("created_at")
-			s.CreatedAt.Encode(e)
-		}
+		e.FieldStart("created_at")
+		e.Str(s.CreatedAt)
 	}
 }
 
@@ -1085,13 +1139,16 @@ func (s *APIV1CloudStorageMyGetOKFilesItem) Decode(d *jx.Decoder) error {
 	if s == nil {
 		return errors.New("invalid: unable to decode APIV1CloudStorageMyGetOKFilesItem to nil")
 	}
+	var requiredBitSet [1]uint8
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
 		case "id":
+			requiredBitSet[0] |= 1 << 0
 			if err := func() error {
-				s.ID.Reset()
-				if err := s.ID.Decode(d); err != nil {
+				v, err := d.Str()
+				s.ID = string(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -1099,9 +1156,11 @@ func (s *APIV1CloudStorageMyGetOKFilesItem) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"id\"")
 			}
 		case "name":
+			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
-				s.Name.Reset()
-				if err := s.Name.Decode(d); err != nil {
+				v, err := d.Str()
+				s.Name = string(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -1109,9 +1168,11 @@ func (s *APIV1CloudStorageMyGetOKFilesItem) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"name\"")
 			}
 		case "size":
+			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
-				s.Size.Reset()
-				if err := s.Size.Decode(d); err != nil {
+				v, err := d.Int()
+				s.Size = int(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -1119,9 +1180,11 @@ func (s *APIV1CloudStorageMyGetOKFilesItem) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"size\"")
 			}
 		case "mime_type":
+			requiredBitSet[0] |= 1 << 3
 			if err := func() error {
-				s.MimeType.Reset()
-				if err := s.MimeType.Decode(d); err != nil {
+				v, err := d.Str()
+				s.MimeType = string(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -1129,9 +1192,11 @@ func (s *APIV1CloudStorageMyGetOKFilesItem) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"mime_type\"")
 			}
 		case "file_path":
+			requiredBitSet[0] |= 1 << 4
 			if err := func() error {
-				s.FilePath.Reset()
-				if err := s.FilePath.Decode(d); err != nil {
+				v, err := d.Str()
+				s.FilePath = string(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -1139,9 +1204,11 @@ func (s *APIV1CloudStorageMyGetOKFilesItem) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"file_path\"")
 			}
 		case "created_at":
+			requiredBitSet[0] |= 1 << 5
 			if err := func() error {
-				s.CreatedAt.Reset()
-				if err := s.CreatedAt.Decode(d); err != nil {
+				v, err := d.Str()
+				s.CreatedAt = string(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -1154,6 +1221,38 @@ func (s *APIV1CloudStorageMyGetOKFilesItem) Decode(d *jx.Decoder) error {
 		return nil
 	}); err != nil {
 		return errors.Wrap(err, "decode APIV1CloudStorageMyGetOKFilesItem")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b00111111,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfAPIV1CloudStorageMyGetOKFilesItem) {
+					name = jsonFieldsNameOfAPIV1CloudStorageMyGetOKFilesItem[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
 	}
 
 	return nil
@@ -1278,22 +1377,16 @@ func (s *APIV1CloudStorageMyUploadPostCreated) Encode(e *jx.Encoder) {
 // encodeFields encodes fields.
 func (s *APIV1CloudStorageMyUploadPostCreated) encodeFields(e *jx.Encoder) {
 	{
-		if s.UploadID.Set {
-			e.FieldStart("upload_id")
-			s.UploadID.Encode(e)
-		}
+		e.FieldStart("upload_id")
+		e.Str(s.UploadID)
 	}
 	{
-		if s.ChunkSize.Set {
-			e.FieldStart("chunk_size")
-			s.ChunkSize.Encode(e)
-		}
+		e.FieldStart("chunk_size")
+		e.Int(s.ChunkSize)
 	}
 	{
-		if s.ExpiresAt.Set {
-			e.FieldStart("expires_at")
-			s.ExpiresAt.Encode(e)
-		}
+		e.FieldStart("expires_at")
+		e.Str(s.ExpiresAt)
 	}
 }
 
@@ -1308,13 +1401,16 @@ func (s *APIV1CloudStorageMyUploadPostCreated) Decode(d *jx.Decoder) error {
 	if s == nil {
 		return errors.New("invalid: unable to decode APIV1CloudStorageMyUploadPostCreated to nil")
 	}
+	var requiredBitSet [1]uint8
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
 		case "upload_id":
+			requiredBitSet[0] |= 1 << 0
 			if err := func() error {
-				s.UploadID.Reset()
-				if err := s.UploadID.Decode(d); err != nil {
+				v, err := d.Str()
+				s.UploadID = string(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -1322,9 +1418,11 @@ func (s *APIV1CloudStorageMyUploadPostCreated) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"upload_id\"")
 			}
 		case "chunk_size":
+			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
-				s.ChunkSize.Reset()
-				if err := s.ChunkSize.Decode(d); err != nil {
+				v, err := d.Int()
+				s.ChunkSize = int(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -1332,9 +1430,11 @@ func (s *APIV1CloudStorageMyUploadPostCreated) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"chunk_size\"")
 			}
 		case "expires_at":
+			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
-				s.ExpiresAt.Reset()
-				if err := s.ExpiresAt.Decode(d); err != nil {
+				v, err := d.Str()
+				s.ExpiresAt = string(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -1347,6 +1447,38 @@ func (s *APIV1CloudStorageMyUploadPostCreated) Decode(d *jx.Decoder) error {
 		return nil
 	}); err != nil {
 		return errors.Wrap(err, "decode APIV1CloudStorageMyUploadPostCreated")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b00000111,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfAPIV1CloudStorageMyUploadPostCreated) {
+					name = jsonFieldsNameOfAPIV1CloudStorageMyUploadPostCreated[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
 	}
 
 	return nil
@@ -1714,40 +1846,28 @@ func (s *APIV1CloudStorageMyUploadUploadIDCompletePostCreated) Encode(e *jx.Enco
 // encodeFields encodes fields.
 func (s *APIV1CloudStorageMyUploadUploadIDCompletePostCreated) encodeFields(e *jx.Encoder) {
 	{
-		if s.ID.Set {
-			e.FieldStart("id")
-			s.ID.Encode(e)
-		}
+		e.FieldStart("id")
+		e.Str(s.ID)
 	}
 	{
-		if s.Name.Set {
-			e.FieldStart("name")
-			s.Name.Encode(e)
-		}
+		e.FieldStart("name")
+		e.Str(s.Name)
 	}
 	{
-		if s.Size.Set {
-			e.FieldStart("size")
-			s.Size.Encode(e)
-		}
+		e.FieldStart("size")
+		e.Int(s.Size)
 	}
 	{
-		if s.MimeType.Set {
-			e.FieldStart("mime_type")
-			s.MimeType.Encode(e)
-		}
+		e.FieldStart("mime_type")
+		e.Str(s.MimeType)
 	}
 	{
-		if s.FilePath.Set {
-			e.FieldStart("file_path")
-			s.FilePath.Encode(e)
-		}
+		e.FieldStart("file_path")
+		e.Str(s.FilePath)
 	}
 	{
-		if s.CreatedAt.Set {
-			e.FieldStart("created_at")
-			s.CreatedAt.Encode(e)
-		}
+		e.FieldStart("created_at")
+		e.Str(s.CreatedAt)
 	}
 }
 
@@ -1765,13 +1885,16 @@ func (s *APIV1CloudStorageMyUploadUploadIDCompletePostCreated) Decode(d *jx.Deco
 	if s == nil {
 		return errors.New("invalid: unable to decode APIV1CloudStorageMyUploadUploadIDCompletePostCreated to nil")
 	}
+	var requiredBitSet [1]uint8
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
 		case "id":
+			requiredBitSet[0] |= 1 << 0
 			if err := func() error {
-				s.ID.Reset()
-				if err := s.ID.Decode(d); err != nil {
+				v, err := d.Str()
+				s.ID = string(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -1779,9 +1902,11 @@ func (s *APIV1CloudStorageMyUploadUploadIDCompletePostCreated) Decode(d *jx.Deco
 				return errors.Wrap(err, "decode field \"id\"")
 			}
 		case "name":
+			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
-				s.Name.Reset()
-				if err := s.Name.Decode(d); err != nil {
+				v, err := d.Str()
+				s.Name = string(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -1789,9 +1914,11 @@ func (s *APIV1CloudStorageMyUploadUploadIDCompletePostCreated) Decode(d *jx.Deco
 				return errors.Wrap(err, "decode field \"name\"")
 			}
 		case "size":
+			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
-				s.Size.Reset()
-				if err := s.Size.Decode(d); err != nil {
+				v, err := d.Int()
+				s.Size = int(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -1799,9 +1926,11 @@ func (s *APIV1CloudStorageMyUploadUploadIDCompletePostCreated) Decode(d *jx.Deco
 				return errors.Wrap(err, "decode field \"size\"")
 			}
 		case "mime_type":
+			requiredBitSet[0] |= 1 << 3
 			if err := func() error {
-				s.MimeType.Reset()
-				if err := s.MimeType.Decode(d); err != nil {
+				v, err := d.Str()
+				s.MimeType = string(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -1809,9 +1938,11 @@ func (s *APIV1CloudStorageMyUploadUploadIDCompletePostCreated) Decode(d *jx.Deco
 				return errors.Wrap(err, "decode field \"mime_type\"")
 			}
 		case "file_path":
+			requiredBitSet[0] |= 1 << 4
 			if err := func() error {
-				s.FilePath.Reset()
-				if err := s.FilePath.Decode(d); err != nil {
+				v, err := d.Str()
+				s.FilePath = string(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -1819,9 +1950,11 @@ func (s *APIV1CloudStorageMyUploadUploadIDCompletePostCreated) Decode(d *jx.Deco
 				return errors.Wrap(err, "decode field \"file_path\"")
 			}
 		case "created_at":
+			requiredBitSet[0] |= 1 << 5
 			if err := func() error {
-				s.CreatedAt.Reset()
-				if err := s.CreatedAt.Decode(d); err != nil {
+				v, err := d.Str()
+				s.CreatedAt = string(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -1834,6 +1967,38 @@ func (s *APIV1CloudStorageMyUploadUploadIDCompletePostCreated) Decode(d *jx.Deco
 		return nil
 	}); err != nil {
 		return errors.Wrap(err, "decode APIV1CloudStorageMyUploadUploadIDCompletePostCreated")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b00111111,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfAPIV1CloudStorageMyUploadUploadIDCompletePostCreated) {
+					name = jsonFieldsNameOfAPIV1CloudStorageMyUploadUploadIDCompletePostCreated[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
 	}
 
 	return nil
@@ -2054,50 +2219,36 @@ func (s *APIV1CloudStorageMyUploadUploadIDGetOK) Encode(e *jx.Encoder) {
 // encodeFields encodes fields.
 func (s *APIV1CloudStorageMyUploadUploadIDGetOK) encodeFields(e *jx.Encoder) {
 	{
-		if s.UploadID.Set {
-			e.FieldStart("upload_id")
-			s.UploadID.Encode(e)
-		}
+		e.FieldStart("upload_id")
+		e.Str(s.UploadID)
 	}
 	{
-		if s.Name.Set {
-			e.FieldStart("name")
-			s.Name.Encode(e)
-		}
+		e.FieldStart("name")
+		e.Str(s.Name)
 	}
 	{
-		if s.Size.Set {
-			e.FieldStart("size")
-			s.Size.Encode(e)
-		}
+		e.FieldStart("size")
+		e.Int(s.Size)
 	}
 	{
-		if s.ReceivedBytes.Set {
-			e.FieldStart("received_bytes")
-			s.ReceivedBytes.Encode(e)
-		}
+		e.FieldStart("received_bytes")
+		e.Int(s.ReceivedBytes)
 	}
 	{
-		if s.ReceivedRanges != nil {
-			e.FieldStart("received_ranges")
-			e.ArrStart()
-			for _, elem := range s.ReceivedRanges {
-				e.Str(elem)
-			}
-			e.ArrEnd()
+		e.FieldStart("received_ranges")
+		e.ArrStart()
+		for _, elem := range s.ReceivedRanges {
+			e.Str(elem)
 		}
+		e.ArrEnd()
 	}
 	{
-		if s.ChunkSize.Set {
-			e.FieldStart("chunk_size")
-			s.ChunkSize.Encode(e)
-		}
+		e.FieldStart("chunk_size")
+		e.Int(s.ChunkSize)
 	}
 	{
-		if s.ExpiresAt.Set {
-			e.FieldStart("expires_at")
-			s.ExpiresAt.Encode(e)
-		}
+		e.FieldStart("expires_at")
+		e.Str(s.ExpiresAt)
 	}
 }
 
@@ -2116,13 +2267,16 @@ func (s *APIV1CloudStorageMyUploadUploadIDGetOK) Decode(d *jx.Decoder) error {
 	if s == nil {
 		return errors.New("invalid: unable to decode APIV1CloudStorageMyUploadUploadIDGetOK to nil")
 	}
+	var requiredBitSet [1]uint8
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
 		case "upload_id":
+			requiredBitSet[0] |= 1 << 0
 			if err := func() error {
-				s.UploadID.Reset()
-				if err := s.UploadID.Decode(d); err != nil {
+				v, err := d.Str()
+				s.UploadID = string(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -2130,9 +2284,11 @@ func (s *APIV1CloudStorageMyUploadUploadIDGetOK) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"upload_id\"")
 			}
 		case "name":
+			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
-				s.Name.Reset()
-				if err := s.Name.Decode(d); err != nil {
+				v, err := d.Str()
+				s.Name = string(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -2140,9 +2296,11 @@ func (s *APIV1CloudStorageMyUploadUploadIDGetOK) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"name\"")
 			}
 		case "size":
+			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
-				s.Size.Reset()
-				if err := s.Size.Decode(d); err != nil {
+				v, err := d.Int()
+				s.Size = int(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -2150,9 +2308,11 @@ func (s *APIV1CloudStorageMyUploadUploadIDGetOK) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"size\"")
 			}
 		case "received_bytes":
+			requiredBitSet[0] |= 1 << 3
 			if err := func() error {
-				s.ReceivedBytes.Reset()
-				if err := s.ReceivedBytes.Decode(d); err != nil {
+				v, err := d.Int()
+				s.ReceivedBytes = int(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -2160,6 +2320,7 @@ func (s *APIV1CloudStorageMyUploadUploadIDGetOK) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"received_bytes\"")
 			}
 		case "received_ranges":
+			requiredBitSet[0] |= 1 << 4
 			if err := func() error {
 				s.ReceivedRanges = make([]string, 0)
 				if err := d.Arr(func(d *jx.Decoder) error {
@@ -2179,9 +2340,11 @@ func (s *APIV1CloudStorageMyUploadUploadIDGetOK) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"received_ranges\"")
 			}
 		case "chunk_size":
+			requiredBitSet[0] |= 1 << 5
 			if err := func() error {
-				s.ChunkSize.Reset()
-				if err := s.ChunkSize.Decode(d); err != nil {
+				v, err := d.Int()
+				s.ChunkSize = int(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -2189,9 +2352,11 @@ func (s *APIV1CloudStorageMyUploadUploadIDGetOK) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"chunk_size\"")
 			}
 		case "expires_at":
+			requiredBitSet[0] |= 1 << 6
 			if err := func() error {
-				s.ExpiresAt.Reset()
-				if err := s.ExpiresAt.Decode(d); err != nil {
+				v, err := d.Str()
+				s.ExpiresAt = string(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -2204,6 +2369,38 @@ func (s *APIV1CloudStorageMyUploadUploadIDGetOK) Decode(d *jx.Decoder) error {
 		return nil
 	}); err != nil {
 		return errors.Wrap(err, "decode APIV1CloudStorageMyUploadUploadIDGetOK")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b01111111,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfAPIV1CloudStorageMyUploadUploadIDGetOK) {
+					name = jsonFieldsNameOfAPIV1CloudStorageMyUploadUploadIDGetOK[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
 	}
 
 	return nil
@@ -2424,22 +2621,16 @@ func (s *APIV1CloudStorageMyUploadUploadIDPutOK) Encode(e *jx.Encoder) {
 // encodeFields encodes fields.
 func (s *APIV1CloudStorageMyUploadUploadIDPutOK) encodeFields(e *jx.Encoder) {
 	{
-		if s.UploadID.Set {
-			e.FieldStart("upload_id")
-			s.UploadID.Encode(e)
-		}
+		e.FieldStart("upload_id")
+		e.Str(s.UploadID)
 	}
 	{
-		if s.ReceivedBytes.Set {
-			e.FieldStart("received_bytes")
-			s.ReceivedBytes.Encode(e)
-		}
+		e.FieldStart("received_bytes")
+		e.Int(s.ReceivedBytes)
 	}
 	{
-		if s.TotalBytes.Set {
-			e.FieldStart("total_bytes")
-			s.TotalBytes.Encode(e)
-		}
+		e.FieldStart("total_bytes")
+		e.Int(s.TotalBytes)
 	}
 }
 
@@ -2454,13 +2645,16 @@ func (s *APIV1CloudStorageMyUploadUploadIDPutOK) Decode(d *jx.Decoder) error {
 	if s == nil {
 		return errors.New("invalid: unable to decode APIV1CloudStorageMyUploadUploadIDPutOK to nil")
 	}
+	var requiredBitSet [1]uint8
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
 		case "upload_id":
+			requiredBitSet[0] |= 1 << 0
 			if err := func() error {
-				s.UploadID.Reset()
-				if err := s.UploadID.Decode(d); err != nil {
+				v, err := d.Str()
+				s.UploadID = string(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -2468,9 +2662,11 @@ func (s *APIV1CloudStorageMyUploadUploadIDPutOK) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"upload_id\"")
 			}
 		case "received_bytes":
+			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
-				s.ReceivedBytes.Reset()
-				if err := s.ReceivedBytes.Decode(d); err != nil {
+				v, err := d.Int()
+				s.ReceivedBytes = int(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -2478,9 +2674,11 @@ func (s *APIV1CloudStorageMyUploadUploadIDPutOK) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"received_bytes\"")
 			}
 		case "total_bytes":
+			requiredBitSet[0] |= 1 << 2
 			if err := func() error {
-				s.TotalBytes.Reset()
-				if err := s.TotalBytes.Decode(d); err != nil {
+				v, err := d.Int()
+				s.TotalBytes = int(v)
+				if err != nil {
 					return err
 				}
 				return nil
@@ -2493,6 +2691,38 @@ func (s *APIV1CloudStorageMyUploadUploadIDPutOK) Decode(d *jx.Decoder) error {
 		return nil
 	}); err != nil {
 		return errors.Wrap(err, "decode APIV1CloudStorageMyUploadUploadIDPutOK")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b00000111,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfAPIV1CloudStorageMyUploadUploadIDPutOK) {
+					name = jsonFieldsNameOfAPIV1CloudStorageMyUploadUploadIDPutOK[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
 	}
 
 	return nil
@@ -2795,111 +3025,6 @@ func (s *ErrorResponse) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *ErrorResponse) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes float64 as json.
-func (o OptFloat64) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	e.Float64(float64(o.Value))
-}
-
-// Decode decodes float64 from json.
-func (o *OptFloat64) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptFloat64 to nil")
-	}
-	o.Set = true
-	v, err := d.Float64()
-	if err != nil {
-		return err
-	}
-	o.Value = float64(v)
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptFloat64) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptFloat64) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes int as json.
-func (o OptInt) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	e.Int(int(o.Value))
-}
-
-// Decode decodes int from json.
-func (o *OptInt) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptInt to nil")
-	}
-	o.Set = true
-	v, err := d.Int()
-	if err != nil {
-		return err
-	}
-	o.Value = int(v)
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptInt) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptInt) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes string as json.
-func (o OptString) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	e.Str(string(o.Value))
-}
-
-// Decode decodes string from json.
-func (o *OptString) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptString to nil")
-	}
-	o.Set = true
-	v, err := d.Str()
-	if err != nil {
-		return err
-	}
-	o.Value = string(v)
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptString) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptString) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
