@@ -730,8 +730,8 @@ func decodeAPIV1CloudStorageMyUploadPostResponse(resp *http.Response) (res APIV1
 
 func decodeAPIV1CloudStorageMyUploadUploadIDCompletePostResponse(resp *http.Response) (res APIV1CloudStorageMyUploadUploadIDCompletePostRes, _ error) {
 	switch resp.StatusCode {
-	case 201:
-		// Code 201.
+	case 200:
+		// Code 200.
 		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
 		if err != nil {
 			return res, errors.Wrap(err, "parse media type")
@@ -744,7 +744,7 @@ func decodeAPIV1CloudStorageMyUploadUploadIDCompletePostResponse(resp *http.Resp
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response APIV1CloudStorageMyUploadUploadIDCompletePostCreated
+			var response APIV1CloudStorageMyUploadUploadIDCompletePostOK
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
