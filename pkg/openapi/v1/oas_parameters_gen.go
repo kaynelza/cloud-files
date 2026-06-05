@@ -203,8 +203,8 @@ func decodeAPIV1CloudStorageMyFileInfoGetParams(args [1]string, argsEscaped bool
 
 // APIV1CloudStorageMyGetParams is parameters of GET /api/v1/cloud/storage/my operation.
 type APIV1CloudStorageMyGetParams struct {
-	Limit OptInt `json:",omitempty,omitzero"`
-	Page  OptInt `json:",omitempty,omitzero"`
+	Limit int
+	Page  int
 }
 
 func unpackAPIV1CloudStorageMyGetParams(packed middleware.Parameters) (params APIV1CloudStorageMyGetParams) {
@@ -213,18 +213,14 @@ func unpackAPIV1CloudStorageMyGetParams(packed middleware.Parameters) (params AP
 			Name: "limit",
 			In:   "query",
 		}
-		if v, ok := packed[key]; ok {
-			params.Limit = v.(OptInt)
-		}
+		params.Limit = packed[key].(int)
 	}
 	{
 		key := middleware.ParameterKey{
 			Name: "page",
 			In:   "query",
 		}
-		if v, ok := packed[key]; ok {
-			params.Page = v.(OptInt)
-		}
+		params.Page = packed[key].(int)
 	}
 	return params
 }
@@ -234,7 +230,7 @@ func decodeAPIV1CloudStorageMyGetParams(args [0]string, argsEscaped bool, r *htt
 	// Set default value for query: limit.
 	{
 		val := int(100)
-		params.Limit.SetTo(val)
+		params.Limit = val
 	}
 	// Decode query: limit.
 	if err := func() error {
@@ -246,28 +242,23 @@ func decodeAPIV1CloudStorageMyGetParams(args [0]string, argsEscaped bool, r *htt
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotLimitVal int
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToInt(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotLimitVal = c
-					return nil
-				}(); err != nil {
+				val, err := d.DecodeValue()
+				if err != nil {
 					return err
 				}
-				params.Limit.SetTo(paramsDotLimitVal)
+
+				c, err := conv.ToInt(val)
+				if err != nil {
+					return err
+				}
+
+				params.Limit = c
 				return nil
 			}); err != nil {
 				return err
 			}
+		} else {
+			return err
 		}
 		return nil
 	}(); err != nil {
@@ -280,7 +271,7 @@ func decodeAPIV1CloudStorageMyGetParams(args [0]string, argsEscaped bool, r *htt
 	// Set default value for query: page.
 	{
 		val := int(1)
-		params.Page.SetTo(val)
+		params.Page = val
 	}
 	// Decode query: page.
 	if err := func() error {
@@ -292,28 +283,23 @@ func decodeAPIV1CloudStorageMyGetParams(args [0]string, argsEscaped bool, r *htt
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotPageVal int
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToInt(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotPageVal = c
-					return nil
-				}(); err != nil {
+				val, err := d.DecodeValue()
+				if err != nil {
 					return err
 				}
-				params.Page.SetTo(paramsDotPageVal)
+
+				c, err := conv.ToInt(val)
+				if err != nil {
+					return err
+				}
+
+				params.Page = c
 				return nil
 			}); err != nil {
 				return err
 			}
+		} else {
+			return err
 		}
 		return nil
 	}(); err != nil {
