@@ -1,9 +1,12 @@
 package v1
 
 import (
+	"bufio"
 	"bytes"
 	"context"
+	"fmt"
 	"io"
+	"math"
 	"path"
 	"regexp"
 	"strings"
@@ -34,19 +37,20 @@ type (
 		GetUserByRefreshToken(ctx context.Context, token string) (entity.User, error)
 		UpdateRefreshToken(ctx context.Context, refreshToken string, user entity.User) error
 		GetUser(ctx context.Context, email string) (uuid.UUID, error)
-		GetUserFiles(ctx context.Context, user entity.User) ([]entity.File, int, float64, error)
-		GetUserFile(ctx context.Context, user entity.User) (entity.File, error)
-		GetUserFileData(ctx context.Context, user entity.User) ([]byte, error)
+		GetUserFiles(ctx context.Context, user entity.User, limit, page int) ([]entity.File, int, float64, error)
+		GetUserFile(ctx context.Context, user entity.User, path string) (entity.File, error)
+		GetUserFileData(ctx context.Context, user entity.User, id string) ([]byte, error)
 		CreateUploadSession(ctx context.Context, duration time.Duration, user entity.User, session entity.UploadSession) (string, string, error)
 		GetInfoAboutCompletedFile(ctx context.Context, id string) (entity.File, error)
-		DeleteUploadID(ctx context.Context, id string) error
-		GetInfoAboutFile(ctx context.Context, id string) (entity.File, string, int, []string, error)
-		UpdateReceivedBytes(ctx context.Context, id string, data io.Reader, chunk int) (int, int, error)
+		MarkUploadCompleted(ctx context.Context, id string) error
+		GetInfoAboutUploadSession(ctx context.Context, id string) (entity.UploadIDSession, error)
+		AppendFileBytes(ctx context.Context, id string, data []byte) (int, error)
 	}
 
 	Tokenizer interface {
 		NewTokens(ctx context.Context, user entity.User) (entity.Tokens, error)
 		GetUser(ctx context.Context, token string) (entity.User, error)
+		CheckToken(ctx context.Context, token string) error
 	}
 )
 
@@ -88,7 +92,7 @@ func (s *Server) APIV1AuthRefreshPost(ctx context.Context, params api.APIV1AuthR
 
 func (s *Server) APIV1AuthSignInPost(ctx context.Context, req *api.APIV1AuthSignInPostReq) (*api.APIV1AuthSignInPostOK, error) {
 	if err := s.ValidateCreds(req.Email, req.Password); err != nil {
-		return &api.APIV1AuthSignInPostOK{}, errors.New("invalid credentials")
+		return nil, errors.New("invalid credentials")
 	}
 
 	hash, err := s.repo.GetHashedPassword(ctx, req.Email)
@@ -150,7 +154,7 @@ func (s *Server) APIV1CloudStorageMyDownloadIDGet(ctx context.Context, params ap
 		return nil, errors.Wrap(err, "get user")
 	}
 
-	data, err := s.repo.GetUserFileData(ctx, user)
+	data, err := s.repo.GetUserFileData(ctx, user, params.ID)
 	if err != nil {
 		return nil, errors.Wrap(err, "get file data")
 	}
@@ -168,7 +172,7 @@ func (s *Server) APIV1CloudStorageMyFileInfoGet(ctx context.Context, params api.
 		return nil, errors.Wrap(err, "get user")
 	}
 
-	file, err := s.repo.GetUserFile(ctx, user)
+	file, err := s.repo.GetUserFile(ctx, user, params.File)
 	if err != nil {
 		return nil, errors.Wrap(err, "get file")
 	}
@@ -189,7 +193,7 @@ func (s *Server) APIV1CloudStorageMyGet(ctx context.Context, params api.APIV1Clo
 		return nil, errors.Wrap(err, "get user")
 	}
 
-	files, total, usedGbs, err := s.repo.GetUserFiles(ctx, user)
+	files, total, usedGbs, err := s.repo.GetUserFiles(ctx, user, params.Limit, params.Page)
 	if err != nil {
 		return nil, errors.Wrap(err, "get user files")
 	}
@@ -212,7 +216,7 @@ func (s *Server) APIV1CloudStorageMyUploadPost(ctx context.Context, req *api.API
 		return nil, errors.Wrap(err, "get user")
 	}
 
-	uploadIds, expiresAt, err := s.repo.CreateUploadSession(ctx, entity.LifeSession, user, entity.UploadSession{
+	uploadID, expiresAt, err := s.repo.CreateUploadSession(ctx, entity.UploadSessionLifetime, user, entity.UploadSession{
 		FileName: req.Name,
 		Size:     req.Size,
 		MimeType: req.MimeType,
@@ -223,7 +227,7 @@ func (s *Server) APIV1CloudStorageMyUploadPost(ctx context.Context, req *api.API
 	}
 
 	return &api.APIV1CloudStorageMyUploadPostCreated{
-		UploadID:  uploadIds,
+		UploadID:  uploadID,
 		ChunkSize: entity.DefaultChunkSize,
 		ExpiresAt: expiresAt,
 	}, nil
@@ -234,22 +238,22 @@ func (s *Server) APIV1CloudStorageMyUploadUploadIDCompletePost(ctx context.Conte
 		return nil, errors.Wrap(err, "invalid file")
 	}
 
-	file, err := s.repo.GetInfoAboutCompletedFile(ctx, params.UploadID)
+	fileSession, err := s.repo.GetInfoAboutCompletedFile(ctx, params.UploadID)
 	if err != nil {
 		return nil, errors.Wrap(err, "get file info")
 	}
 
-	if err := s.repo.DeleteUploadID(ctx, params.UploadID); err != nil { // todo: mark completed
+	if err := s.repo.MarkUploadCompleted(ctx, params.UploadID); err != nil { // todo: mark completed
 		return nil, errors.Wrap(err, "delete upload id")
 	}
 
-	return &api.APIV1CloudStorageMyUploadUploadIDCompletePostCreated{
-		ID:        file.Id,
-		Name:      file.Name,
-		Size:      file.Size,
-		MimeType:  file.MimeType,
-		FilePath:  file.FilePath,
-		CreatedAt: file.CreatedAt.String(),
+	return &api.APIV1CloudStorageMyUploadUploadIDCompletePostOK{
+		ID:        fileSession.Id,
+		Name:      fileSession.Name,
+		Size:      fileSession.Size,
+		MimeType:  fileSession.MimeType,
+		FilePath:  fileSession.FilePath,
+		CreatedAt: fileSession.CreatedAt.String(),
 	}, nil
 }
 
@@ -258,19 +262,25 @@ func (s *Server) APIV1CloudStorageMyUploadUploadIDGet(ctx context.Context, param
 		return nil, errors.Wrap(err, "invalid file")
 	}
 
-	file, expiresAt, resBytes, resRanges, err := s.repo.GetInfoAboutFile(ctx, params.UploadID)
+	fileSession, err := s.repo.GetInfoAboutUploadSession(ctx, params.UploadID)
 	if err != nil {
-		return nil, errors.Wrap(err, "get file info")
+		return nil, errors.Wrap(err, "get upload session")
+	}
+
+	var recievedRanges []string
+	for i := 0; i <= fileSession.ReceivedBytes; i += fileSession.ChunkSize {
+		bytesRange := fmt.Sprintf("%f-%f", i, math.Min(float64(i+fileSession.ChunkSize), float64(fileSession.Size)))
+		recievedRanges = append(recievedRanges, bytesRange)
 	}
 
 	return &api.APIV1CloudStorageMyUploadUploadIDGetOK{
-		UploadID:       params.UploadID,
-		Name:           file.Name,
-		Size:           file.Size,
-		ReceivedBytes:  resBytes,
-		ReceivedRanges: resRanges,
-		ChunkSize:      entity.DefaultChunkSize,
-		ExpiresAt:      expiresAt,
+		UploadID:       fileSession.UploadID,
+		Name:           fileSession.Name,
+		Size:           fileSession.Size,
+		ReceivedBytes:  fileSession.ReceivedBytes,
+		ReceivedRanges: recievedRanges,
+		ChunkSize:      fileSession.ChunkSize,
+		ExpiresAt:      fileSession.ExpiresAt,
 	}, nil
 }
 
@@ -279,14 +289,25 @@ func (s *Server) APIV1CloudStorageMyUploadUploadIDPut(ctx context.Context, req a
 		return nil, errors.Wrap(err, "invalid file")
 	}
 
-	resBytes, fileSize, err := s.repo.UpdateReceivedBytes(ctx, params.UploadID, req.Data, entity.DefaultChunkSize)
+	r := bufio.NewReader(req.Data)
+
+	if entity.DefaultChunkSize < r.Size() {
+		return nil, errors.New("chunk size is too big")
+	}
+
+	data, err := io.ReadAll(r)
+	if err != nil {
+		return nil, errors.Wrap(err, "read data")
+	}
+
+	fileSize, err := s.repo.AppendFileBytes(ctx, params.UploadID, data)
 	if err != nil {
 		return nil, errors.Wrap(err, "update received bytes")
 	}
 
 	return &api.APIV1CloudStorageMyUploadUploadIDPutOK{
 		UploadID:      params.UploadID,
-		ReceivedBytes: resBytes,
+		ReceivedBytes: r.Size(),
 		TotalBytes:    fileSize,
 	}, nil
 }
@@ -311,7 +332,6 @@ func convertEntityToApiFiles(f []entity.File) []api.APIV1CloudStorageMyGetOKFile
 }
 
 func (s *Server) ValidateCreds(email, password string) error {
-
 	if !s.emailRegexp.MatchString(email) {
 		return errors.Wrap(entity.ErrBadRequest, "invalid email")
 	}
