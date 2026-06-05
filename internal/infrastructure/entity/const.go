@@ -2,11 +2,11 @@ package entity
 
 import "time"
 
-const AuthTokenKey = "auth_token"
-
-const DefaultChunkSize = 5 * 1024 * 1024
-
-const LifeSession = 24 * time.Hour
+const (
+	AuthTokenKey          = "auth_token"
+	DefaultChunkSize      = 5 * 1024 * 1024
+	UploadSessionLifetime = 24 * time.Hour
+)
 
 // AllowedMIMETypes представляет собой множество разрешенных MIME-типов.
 var AllowedMIMETypes = map[string]struct{}{
