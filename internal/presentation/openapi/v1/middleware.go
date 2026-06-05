@@ -18,7 +18,9 @@ func (s *Server) AccessTokenMiddleware(req middleware.Request, next middleware.N
 		return middleware.Response{}, errors.Wrap(entity.ErrUnauthorized, "invalid JWT")
 	}
 
-	// todo: check token
+	if err := s.tokenizer.CheckToken(req.Context, token); err != nil {
+		return middleware.Response{}, errors.Wrap(entity.ErrUnauthorized, "invalid token")
+	}
 
 	req.SetContext(context.WithValue(req.Context, entity.AuthTokenKey, token))
 
