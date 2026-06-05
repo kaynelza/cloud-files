@@ -121,11 +121,13 @@ paths:
           schema:
             type: integer
             default: 100
+          required: true
         - name: page
           in: query
           schema:
             type: integer
             default: 1
+          required: true
       responses:
         '200':
           description: OK
@@ -374,8 +376,8 @@ paths:
           required: true
           schema: { type: string }
       responses:
-        '201':
-          description: Created
+        '200':
+          description: Done
           content:
             application/json:
               schema:
