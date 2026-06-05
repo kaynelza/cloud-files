@@ -121,11 +121,13 @@ paths:
           schema:
             type: integer
             default: 100
+          required: true
         - name: page
           in: query
           schema:
             type: integer
             default: 1
+          required: true
       responses:
         '200':
           description: OK
@@ -145,8 +147,10 @@ paths:
                         mime_type: { type: string }
                         file_path: { type: string }
                         created_at: { type: string }
+                      required: [id,name,size,mime_type,file_path,created_at]
                   total: { type: integer }
                   used_gbs: { type: number }
+                required: [total,used_gbs]
         default:
           description: "internal server error"
           content:
@@ -178,6 +182,7 @@ paths:
                   mime_type: { type: string }
                   file_path: { type: string }
                   created_at: { type: string }
+                required: [id,name,size,mime_type,file_path,created_at]
         default:
           description: "internal server error"
           content:
@@ -212,6 +217,7 @@ paths:
                   upload_id: { type: string }
                   chunk_size: { type: integer }
                   expires_at: { type: string }
+                required: [upload_id,chunk_size,expires_at]
         "400":
           description: Invalid body
           content: 
@@ -269,6 +275,7 @@ paths:
                   upload_id: { type: string }
                   received_bytes: { type: integer }
                   total_bytes: { type: integer }
+                required: [upload_id,received_bytes,total_bytes]
         "404":
           description: Upload session not found or expired
           content:
@@ -341,6 +348,7 @@ paths:
                     items: { type: string }
                   chunk_size: { type: integer }
                   expires_at: { type: string }
+                required: [upload_id,name,size,received_bytes,received_ranges,chunk_size,expires_at]
         "404":
           description: Upload session not found or expired
           content:
@@ -368,8 +376,8 @@ paths:
           required: true
           schema: { type: string }
       responses:
-        '201':
-          description: Created
+        '200':
+          description: Done
           content:
             application/json:
               schema:
@@ -381,6 +389,7 @@ paths:
                   mime_type: { type: string }
                   file_path: { type: string }
                   created_at: { type: string }
+                required: [id,name,size,mime_type,file_path,created_at]
         "404":
           description: Upload session not found or expired
           content:

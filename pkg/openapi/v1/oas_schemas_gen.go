@@ -185,78 +185,78 @@ func (s APIV1CloudStorageMyDownloadIDGetOK) Read(p []byte) (n int, err error) {
 func (*APIV1CloudStorageMyDownloadIDGetOK) aPIV1CloudStorageMyDownloadIDGetRes() {}
 
 type APIV1CloudStorageMyFileInfoGetOK struct {
-	ID        OptString `json:"id"`
-	Name      OptString `json:"name"`
-	Size      OptInt    `json:"size"`
-	MimeType  OptString `json:"mime_type"`
-	FilePath  OptString `json:"file_path"`
-	CreatedAt OptString `json:"created_at"`
+	ID        string `json:"id"`
+	Name      string `json:"name"`
+	Size      int    `json:"size"`
+	MimeType  string `json:"mime_type"`
+	FilePath  string `json:"file_path"`
+	CreatedAt string `json:"created_at"`
 }
 
 // GetID returns the value of ID.
-func (s *APIV1CloudStorageMyFileInfoGetOK) GetID() OptString {
+func (s *APIV1CloudStorageMyFileInfoGetOK) GetID() string {
 	return s.ID
 }
 
 // GetName returns the value of Name.
-func (s *APIV1CloudStorageMyFileInfoGetOK) GetName() OptString {
+func (s *APIV1CloudStorageMyFileInfoGetOK) GetName() string {
 	return s.Name
 }
 
 // GetSize returns the value of Size.
-func (s *APIV1CloudStorageMyFileInfoGetOK) GetSize() OptInt {
+func (s *APIV1CloudStorageMyFileInfoGetOK) GetSize() int {
 	return s.Size
 }
 
 // GetMimeType returns the value of MimeType.
-func (s *APIV1CloudStorageMyFileInfoGetOK) GetMimeType() OptString {
+func (s *APIV1CloudStorageMyFileInfoGetOK) GetMimeType() string {
 	return s.MimeType
 }
 
 // GetFilePath returns the value of FilePath.
-func (s *APIV1CloudStorageMyFileInfoGetOK) GetFilePath() OptString {
+func (s *APIV1CloudStorageMyFileInfoGetOK) GetFilePath() string {
 	return s.FilePath
 }
 
 // GetCreatedAt returns the value of CreatedAt.
-func (s *APIV1CloudStorageMyFileInfoGetOK) GetCreatedAt() OptString {
+func (s *APIV1CloudStorageMyFileInfoGetOK) GetCreatedAt() string {
 	return s.CreatedAt
 }
 
 // SetID sets the value of ID.
-func (s *APIV1CloudStorageMyFileInfoGetOK) SetID(val OptString) {
+func (s *APIV1CloudStorageMyFileInfoGetOK) SetID(val string) {
 	s.ID = val
 }
 
 // SetName sets the value of Name.
-func (s *APIV1CloudStorageMyFileInfoGetOK) SetName(val OptString) {
+func (s *APIV1CloudStorageMyFileInfoGetOK) SetName(val string) {
 	s.Name = val
 }
 
 // SetSize sets the value of Size.
-func (s *APIV1CloudStorageMyFileInfoGetOK) SetSize(val OptInt) {
+func (s *APIV1CloudStorageMyFileInfoGetOK) SetSize(val int) {
 	s.Size = val
 }
 
 // SetMimeType sets the value of MimeType.
-func (s *APIV1CloudStorageMyFileInfoGetOK) SetMimeType(val OptString) {
+func (s *APIV1CloudStorageMyFileInfoGetOK) SetMimeType(val string) {
 	s.MimeType = val
 }
 
 // SetFilePath sets the value of FilePath.
-func (s *APIV1CloudStorageMyFileInfoGetOK) SetFilePath(val OptString) {
+func (s *APIV1CloudStorageMyFileInfoGetOK) SetFilePath(val string) {
 	s.FilePath = val
 }
 
 // SetCreatedAt sets the value of CreatedAt.
-func (s *APIV1CloudStorageMyFileInfoGetOK) SetCreatedAt(val OptString) {
+func (s *APIV1CloudStorageMyFileInfoGetOK) SetCreatedAt(val string) {
 	s.CreatedAt = val
 }
 
 type APIV1CloudStorageMyGetOK struct {
 	Files   []APIV1CloudStorageMyGetOKFilesItem `json:"files"`
-	Total   OptInt                              `json:"total"`
-	UsedGbs OptFloat64                          `json:"used_gbs"`
+	Total   int                                 `json:"total"`
+	UsedGbs float64                             `json:"used_gbs"`
 }
 
 // GetFiles returns the value of Files.
@@ -265,12 +265,12 @@ func (s *APIV1CloudStorageMyGetOK) GetFiles() []APIV1CloudStorageMyGetOKFilesIte
 }
 
 // GetTotal returns the value of Total.
-func (s *APIV1CloudStorageMyGetOK) GetTotal() OptInt {
+func (s *APIV1CloudStorageMyGetOK) GetTotal() int {
 	return s.Total
 }
 
 // GetUsedGbs returns the value of UsedGbs.
-func (s *APIV1CloudStorageMyGetOK) GetUsedGbs() OptFloat64 {
+func (s *APIV1CloudStorageMyGetOK) GetUsedGbs() float64 {
 	return s.UsedGbs
 }
 
@@ -280,81 +280,81 @@ func (s *APIV1CloudStorageMyGetOK) SetFiles(val []APIV1CloudStorageMyGetOKFilesI
 }
 
 // SetTotal sets the value of Total.
-func (s *APIV1CloudStorageMyGetOK) SetTotal(val OptInt) {
+func (s *APIV1CloudStorageMyGetOK) SetTotal(val int) {
 	s.Total = val
 }
 
 // SetUsedGbs sets the value of UsedGbs.
-func (s *APIV1CloudStorageMyGetOK) SetUsedGbs(val OptFloat64) {
+func (s *APIV1CloudStorageMyGetOK) SetUsedGbs(val float64) {
 	s.UsedGbs = val
 }
 
 type APIV1CloudStorageMyGetOKFilesItem struct {
-	ID        OptString `json:"id"`
-	Name      OptString `json:"name"`
-	Size      OptInt    `json:"size"`
-	MimeType  OptString `json:"mime_type"`
-	FilePath  OptString `json:"file_path"`
-	CreatedAt OptString `json:"created_at"`
+	ID        string `json:"id"`
+	Name      string `json:"name"`
+	Size      int    `json:"size"`
+	MimeType  string `json:"mime_type"`
+	FilePath  string `json:"file_path"`
+	CreatedAt string `json:"created_at"`
 }
 
 // GetID returns the value of ID.
-func (s *APIV1CloudStorageMyGetOKFilesItem) GetID() OptString {
+func (s *APIV1CloudStorageMyGetOKFilesItem) GetID() string {
 	return s.ID
 }
 
 // GetName returns the value of Name.
-func (s *APIV1CloudStorageMyGetOKFilesItem) GetName() OptString {
+func (s *APIV1CloudStorageMyGetOKFilesItem) GetName() string {
 	return s.Name
 }
 
 // GetSize returns the value of Size.
-func (s *APIV1CloudStorageMyGetOKFilesItem) GetSize() OptInt {
+func (s *APIV1CloudStorageMyGetOKFilesItem) GetSize() int {
 	return s.Size
 }
 
 // GetMimeType returns the value of MimeType.
-func (s *APIV1CloudStorageMyGetOKFilesItem) GetMimeType() OptString {
+func (s *APIV1CloudStorageMyGetOKFilesItem) GetMimeType() string {
 	return s.MimeType
 }
 
 // GetFilePath returns the value of FilePath.
-func (s *APIV1CloudStorageMyGetOKFilesItem) GetFilePath() OptString {
+func (s *APIV1CloudStorageMyGetOKFilesItem) GetFilePath() string {
 	return s.FilePath
 }
 
 // GetCreatedAt returns the value of CreatedAt.
-func (s *APIV1CloudStorageMyGetOKFilesItem) GetCreatedAt() OptString {
+func (s *APIV1CloudStorageMyGetOKFilesItem) GetCreatedAt() string {
 	return s.CreatedAt
 }
 
 // SetID sets the value of ID.
-func (s *APIV1CloudStorageMyGetOKFilesItem) SetID(val OptString) {
+func (s *APIV1CloudStorageMyGetOKFilesItem) SetID(val string) {
 	s.ID = val
 }
 
 // SetName sets the value of Name.
-func (s *APIV1CloudStorageMyGetOKFilesItem) SetName(val OptString) {
+func (s *APIV1CloudStorageMyGetOKFilesItem) SetName(val string) {
 	s.Name = val
 }
 
 // SetSize sets the value of Size.
-func (s *APIV1CloudStorageMyGetOKFilesItem) SetSize(val OptInt) {
+func (s *APIV1CloudStorageMyGetOKFilesItem) SetSize(val int) {
 	s.Size = val
 }
 
 // SetMimeType sets the value of MimeType.
-func (s *APIV1CloudStorageMyGetOKFilesItem) SetMimeType(val OptString) {
+func (s *APIV1CloudStorageMyGetOKFilesItem) SetMimeType(val string) {
 	s.MimeType = val
 }
 
 // SetFilePath sets the value of FilePath.
-func (s *APIV1CloudStorageMyGetOKFilesItem) SetFilePath(val OptString) {
+func (s *APIV1CloudStorageMyGetOKFilesItem) SetFilePath(val string) {
 	s.FilePath = val
 }
 
 // SetCreatedAt sets the value of CreatedAt.
-func (s *APIV1CloudStorageMyGetOKFilesItem) SetCreatedAt(val OptString) {
+func (s *APIV1CloudStorageMyGetOKFilesItem) SetCreatedAt(val string) {
 	s.CreatedAt = val
 }
 
@@ -375,38 +375,38 @@ func (s *APIV1CloudStorageMyUploadPostBadRequest) SetMessage(val string) {
 func (*APIV1CloudStorageMyUploadPostBadRequest) aPIV1CloudStorageMyUploadPostRes() {}
 
 type APIV1CloudStorageMyUploadPostCreated struct {
-	UploadID  OptString `json:"upload_id"`
-	ChunkSize OptInt    `json:"chunk_size"`
-	ExpiresAt OptString `json:"expires_at"`
+	UploadID  string `json:"upload_id"`
+	ChunkSize int    `json:"chunk_size"`
+	ExpiresAt string `json:"expires_at"`
 }
 
 // GetUploadID returns the value of UploadID.
-func (s *APIV1CloudStorageMyUploadPostCreated) GetUploadID() OptString {
+func (s *APIV1CloudStorageMyUploadPostCreated) GetUploadID() string {
 	return s.UploadID
 }
 
 // GetChunkSize returns the value of ChunkSize.
-func (s *APIV1CloudStorageMyUploadPostCreated) GetChunkSize() OptInt {
+func (s *APIV1CloudStorageMyUploadPostCreated) GetChunkSize() int {
 	return s.ChunkSize
 }
 
 // GetExpiresAt returns the value of ExpiresAt.
-func (s *APIV1CloudStorageMyUploadPostCreated) GetExpiresAt() OptString {
+func (s *APIV1CloudStorageMyUploadPostCreated) GetExpiresAt() string {
 	return s.ExpiresAt
 }
 
 // SetUploadID sets the value of UploadID.
-func (s *APIV1CloudStorageMyUploadPostCreated) SetUploadID(val OptString) {
+func (s *APIV1CloudStorageMyUploadPostCreated) SetUploadID(val string) {
 	s.UploadID = val
 }
 
 // SetChunkSize sets the value of ChunkSize.
-func (s *APIV1CloudStorageMyUploadPostCreated) SetChunkSize(val OptInt) {
+func (s *APIV1CloudStorageMyUploadPostCreated) SetChunkSize(val int) {
 	s.ChunkSize = val
 }
 
 // SetExpiresAt sets the value of ExpiresAt.
-func (s *APIV1CloudStorageMyUploadPostCreated) SetExpiresAt(val OptString) {
+func (s *APIV1CloudStorageMyUploadPostCreated) SetExpiresAt(val string) {
 	s.ExpiresAt = val
 }
 
@@ -492,78 +492,6 @@ func (s *APIV1CloudStorageMyUploadUploadIDCompletePostConflict) SetMessage(val s
 func (*APIV1CloudStorageMyUploadUploadIDCompletePostConflict) aPIV1CloudStorageMyUploadUploadIDCompletePostRes() {
 }
 
-type APIV1CloudStorageMyUploadUploadIDCompletePostCreated struct {
-	ID        OptString `json:"id"`
-	Name      OptString `json:"name"`
-	Size      OptInt    `json:"size"`
-	MimeType  OptString `json:"mime_type"`
-	FilePath  OptString `json:"file_path"`
-	CreatedAt OptString `json:"created_at"`
-}
-
-// GetID returns the value of ID.
-func (s *APIV1CloudStorageMyUploadUploadIDCompletePostCreated) GetID() OptString {
-	return s.ID
-}
-
-// GetName returns the value of Name.
-func (s *APIV1CloudStorageMyUploadUploadIDCompletePostCreated) GetName() OptString {
-	return s.Name
-}
-
-// GetSize returns the value of Size.
-func (s *APIV1CloudStorageMyUploadUploadIDCompletePostCreated) GetSize() OptInt {
-	return s.Size
-}
-
-// GetMimeType returns the value of MimeType.
-func (s *APIV1CloudStorageMyUploadUploadIDCompletePostCreated) GetMimeType() OptString {
-	return s.MimeType
-}
-
-// GetFilePath returns the value of FilePath.
-func (s *APIV1CloudStorageMyUploadUploadIDCompletePostCreated) GetFilePath() OptString {
-	return s.FilePath
-}
-
-// GetCreatedAt returns the value of CreatedAt.
-func (s *APIV1CloudStorageMyUploadUploadIDCompletePostCreated) GetCreatedAt() OptString {
-	return s.CreatedAt
-}
-
-// SetID sets the value of ID.
-func (s *APIV1CloudStorageMyUploadUploadIDCompletePostCreated) SetID(val OptString) {
-	s.ID = val
-}
-
-// SetName sets the value of Name.
-func (s *APIV1CloudStorageMyUploadUploadIDCompletePostCreated) SetName(val OptString) {
-	s.Name = val
-}
-
-// SetSize sets the value of Size.
-func (s *APIV1CloudStorageMyUploadUploadIDCompletePostCreated) SetSize(val OptInt) {
-	s.Size = val
-}
-
-// SetMimeType sets the value of MimeType.
-func (s *APIV1CloudStorageMyUploadUploadIDCompletePostCreated) SetMimeType(val OptString) {
-	s.MimeType = val
-}
-
-// SetFilePath sets the value of FilePath.
-func (s *APIV1CloudStorageMyUploadUploadIDCompletePostCreated) SetFilePath(val OptString) {
-	s.FilePath = val
-}
-
-// SetCreatedAt sets the value of CreatedAt.
-func (s *APIV1CloudStorageMyUploadUploadIDCompletePostCreated) SetCreatedAt(val OptString) {
-	s.CreatedAt = val
-}
-
-func (*APIV1CloudStorageMyUploadUploadIDCompletePostCreated) aPIV1CloudStorageMyUploadUploadIDCompletePostRes() {
-}
-
 type APIV1CloudStorageMyUploadUploadIDCompletePostNotFound struct {
 	Message string `json:"message"`
 }
@@ -579,6 +507,78 @@ func (s *APIV1CloudStorageMyUploadUploadIDCompletePostNotFound) SetMessage(val s
 }
 
 func (*APIV1CloudStorageMyUploadUploadIDCompletePostNotFound) aPIV1CloudStorageMyUploadUploadIDCompletePostRes() {
+}
+
+type APIV1CloudStorageMyUploadUploadIDCompletePostOK struct {
+	ID        string `json:"id"`
+	Name      string `json:"name"`
+	Size      int    `json:"size"`
+	MimeType  string `json:"mime_type"`
+	FilePath  string `json:"file_path"`
+	CreatedAt string `json:"created_at"`
+}
+
+// GetID returns the value of ID.
+func (s *APIV1CloudStorageMyUploadUploadIDCompletePostOK) GetID() string {
+	return s.ID
+}
+
+// GetName returns the value of Name.
+func (s *APIV1CloudStorageMyUploadUploadIDCompletePostOK) GetName() string {
+	return s.Name
+}
+
+// GetSize returns the value of Size.
+func (s *APIV1CloudStorageMyUploadUploadIDCompletePostOK) GetSize() int {
+	return s.Size
+}
+
+// GetMimeType returns the value of MimeType.
+func (s *APIV1CloudStorageMyUploadUploadIDCompletePostOK) GetMimeType() string {
+	return s.MimeType
+}
+
+// GetFilePath returns the value of FilePath.
+func (s *APIV1CloudStorageMyUploadUploadIDCompletePostOK) GetFilePath() string {
+	return s.FilePath
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *APIV1CloudStorageMyUploadUploadIDCompletePostOK) GetCreatedAt() string {
+	return s.CreatedAt
+}
+
+// SetID sets the value of ID.
+func (s *APIV1CloudStorageMyUploadUploadIDCompletePostOK) SetID(val string) {
+	s.ID = val
+}
+
+// SetName sets the value of Name.
+func (s *APIV1CloudStorageMyUploadUploadIDCompletePostOK) SetName(val string) {
+	s.Name = val
+}
+
+// SetSize sets the value of Size.
+func (s *APIV1CloudStorageMyUploadUploadIDCompletePostOK) SetSize(val int) {
+	s.Size = val
+}
+
+// SetMimeType sets the value of MimeType.
+func (s *APIV1CloudStorageMyUploadUploadIDCompletePostOK) SetMimeType(val string) {
+	s.MimeType = val
+}
+
+// SetFilePath sets the value of FilePath.
+func (s *APIV1CloudStorageMyUploadUploadIDCompletePostOK) SetFilePath(val string) {
+	s.FilePath = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *APIV1CloudStorageMyUploadUploadIDCompletePostOK) SetCreatedAt(val string) {
+	s.CreatedAt = val
+}
+
+func (*APIV1CloudStorageMyUploadUploadIDCompletePostOK) aPIV1CloudStorageMyUploadUploadIDCompletePostRes() {
 }
 
 type APIV1CloudStorageMyUploadUploadIDGetNotFound struct {
@@ -598,32 +598,32 @@ func (s *APIV1CloudStorageMyUploadUploadIDGetNotFound) SetMessage(val string) {
 func (*APIV1CloudStorageMyUploadUploadIDGetNotFound) aPIV1CloudStorageMyUploadUploadIDGetRes() {}
 
 type APIV1CloudStorageMyUploadUploadIDGetOK struct {
-	UploadID       OptString `json:"upload_id"`
-	Name           OptString `json:"name"`
-	Size           OptInt    `json:"size"`
-	ReceivedBytes  OptInt    `json:"received_bytes"`
-	ReceivedRanges []string  `json:"received_ranges"`
-	ChunkSize      OptInt    `json:"chunk_size"`
-	ExpiresAt      OptString `json:"expires_at"`
+	UploadID       string   `json:"upload_id"`
+	Name           string   `json:"name"`
+	Size           int      `json:"size"`
+	ReceivedBytes  int      `json:"received_bytes"`
+	ReceivedRanges []string `json:"received_ranges"`
+	ChunkSize      int      `json:"chunk_size"`
+	ExpiresAt      string   `json:"expires_at"`
 }
 
 // GetUploadID returns the value of UploadID.
-func (s *APIV1CloudStorageMyUploadUploadIDGetOK) GetUploadID() OptString {
+func (s *APIV1CloudStorageMyUploadUploadIDGetOK) GetUploadID() string {
 	return s.UploadID
 }
 
 // GetName returns the value of Name.
-func (s *APIV1CloudStorageMyUploadUploadIDGetOK) GetName() OptString {
+func (s *APIV1CloudStorageMyUploadUploadIDGetOK) GetName() string {
 	return s.Name
 }
 
 // GetSize returns the value of Size.
-func (s *APIV1CloudStorageMyUploadUploadIDGetOK) GetSize() OptInt {
+func (s *APIV1CloudStorageMyUploadUploadIDGetOK) GetSize() int {
 	return s.Size
 }
 
 // GetReceivedBytes returns the value of ReceivedBytes.
-func (s *APIV1CloudStorageMyUploadUploadIDGetOK) GetReceivedBytes() OptInt {
+func (s *APIV1CloudStorageMyUploadUploadIDGetOK) GetReceivedBytes() int {
 	return s.ReceivedBytes
 }
 
@@ -633,32 +633,32 @@ func (s *APIV1CloudStorageMyUploadUploadIDGetOK) GetReceivedRanges() []string {
 }
 
 // GetChunkSize returns the value of ChunkSize.
-func (s *APIV1CloudStorageMyUploadUploadIDGetOK) GetChunkSize() OptInt {
+func (s *APIV1CloudStorageMyUploadUploadIDGetOK) GetChunkSize() int {
 	return s.ChunkSize
 }
 
 // GetExpiresAt returns the value of ExpiresAt.
-func (s *APIV1CloudStorageMyUploadUploadIDGetOK) GetExpiresAt() OptString {
+func (s *APIV1CloudStorageMyUploadUploadIDGetOK) GetExpiresAt() string {
 	return s.ExpiresAt
 }
 
 // SetUploadID sets the value of UploadID.
-func (s *APIV1CloudStorageMyUploadUploadIDGetOK) SetUploadID(val OptString) {
+func (s *APIV1CloudStorageMyUploadUploadIDGetOK) SetUploadID(val string) {
 	s.UploadID = val
 }
 
 // SetName sets the value of Name.
-func (s *APIV1CloudStorageMyUploadUploadIDGetOK) SetName(val OptString) {
+func (s *APIV1CloudStorageMyUploadUploadIDGetOK) SetName(val string) {
 	s.Name = val
 }
 
 // SetSize sets the value of Size.
-func (s *APIV1CloudStorageMyUploadUploadIDGetOK) SetSize(val OptInt) {
+func (s *APIV1CloudStorageMyUploadUploadIDGetOK) SetSize(val int) {
 	s.Size = val
 }
 
 // SetReceivedBytes sets the value of ReceivedBytes.
-func (s *APIV1CloudStorageMyUploadUploadIDGetOK) SetReceivedBytes(val OptInt) {
+func (s *APIV1CloudStorageMyUploadUploadIDGetOK) SetReceivedBytes(val int) {
 	s.ReceivedBytes = val
 }
 
@@ -668,12 +668,12 @@ func (s *APIV1CloudStorageMyUploadUploadIDGetOK) SetReceivedRanges(val []string)
 }
 
 // SetChunkSize sets the value of ChunkSize.
-func (s *APIV1CloudStorageMyUploadUploadIDGetOK) SetChunkSize(val OptInt) {
+func (s *APIV1CloudStorageMyUploadUploadIDGetOK) SetChunkSize(val int) {
 	s.ChunkSize = val
 }
 
 // SetExpiresAt sets the value of ExpiresAt.
-func (s *APIV1CloudStorageMyUploadUploadIDGetOK) SetExpiresAt(val OptString) {
+func (s *APIV1CloudStorageMyUploadUploadIDGetOK) SetExpiresAt(val string) {
 	s.ExpiresAt = val
 }
 
@@ -712,38 +712,38 @@ func (s *APIV1CloudStorageMyUploadUploadIDPutNotFound) SetMessage(val string) {
 func (*APIV1CloudStorageMyUploadUploadIDPutNotFound) aPIV1CloudStorageMyUploadUploadIDPutRes() {}
 
 type APIV1CloudStorageMyUploadUploadIDPutOK struct {
-	UploadID      OptString `json:"upload_id"`
-	ReceivedBytes OptInt    `json:"received_bytes"`
-	TotalBytes    OptInt    `json:"total_bytes"`
+	UploadID      string `json:"upload_id"`
+	ReceivedBytes int    `json:"received_bytes"`
+	TotalBytes    int    `json:"total_bytes"`
 }
 
 // GetUploadID returns the value of UploadID.
-func (s *APIV1CloudStorageMyUploadUploadIDPutOK) GetUploadID() OptString {
+func (s *APIV1CloudStorageMyUploadUploadIDPutOK) GetUploadID() string {
 	return s.UploadID
 }
 
 // GetReceivedBytes returns the value of ReceivedBytes.
-func (s *APIV1CloudStorageMyUploadUploadIDPutOK) GetReceivedBytes() OptInt {
+func (s *APIV1CloudStorageMyUploadUploadIDPutOK) GetReceivedBytes() int {
 	return s.ReceivedBytes
 }
 
 // GetTotalBytes returns the value of TotalBytes.
-func (s *APIV1CloudStorageMyUploadUploadIDPutOK) GetTotalBytes() OptInt {
+func (s *APIV1CloudStorageMyUploadUploadIDPutOK) GetTotalBytes() int {
 	return s.TotalBytes
 }
 
 // SetUploadID sets the value of UploadID.
-func (s *APIV1CloudStorageMyUploadUploadIDPutOK) SetUploadID(val OptString) {
+func (s *APIV1CloudStorageMyUploadUploadIDPutOK) SetUploadID(val string) {
 	s.UploadID = val
 }
 
 // SetReceivedBytes sets the value of ReceivedBytes.
-func (s *APIV1CloudStorageMyUploadUploadIDPutOK) SetReceivedBytes(val OptInt) {
+func (s *APIV1CloudStorageMyUploadUploadIDPutOK) SetReceivedBytes(val int) {
 	s.ReceivedBytes = val
 }
 
 // SetTotalBytes sets the value of TotalBytes.
-func (s *APIV1CloudStorageMyUploadUploadIDPutOK) SetTotalBytes(val OptInt) {
+func (s *APIV1CloudStorageMyUploadUploadIDPutOK) SetTotalBytes(val int) {
 	s.TotalBytes = val
 }
 
@@ -861,142 +861,4 @@ func (s *ErrorResponseStatusCode) SetStatusCode(val int) {
 // SetResponse sets the value of Response.
 func (s *ErrorResponseStatusCode) SetResponse(val ErrorResponse) {
 	s.Response = val
-}
-
-// NewOptFloat64 returns new OptFloat64 with value set to v.
-func NewOptFloat64(v float64) OptFloat64 {
-	return OptFloat64{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptFloat64 is optional float64.
-type OptFloat64 struct {
-	Value float64
-	Set   bool
-}
-
-// IsSet returns true if OptFloat64 was set.
-func (o OptFloat64) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptFloat64) Reset() {
-	var v float64
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptFloat64) SetTo(v float64) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptFloat64) Get() (v float64, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptFloat64) Or(d float64) float64 {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptInt returns new OptInt with value set to v.
-func NewOptInt(v int) OptInt {
-	return OptInt{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptInt is optional int.
-type OptInt struct {
-	Value int
-	Set   bool
-}
-
-// IsSet returns true if OptInt was set.
-func (o OptInt) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptInt) Reset() {
-	var v int
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptInt) SetTo(v int) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptInt) Get() (v int, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptInt) Or(d int) int {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptString returns new OptString with value set to v.
-func NewOptString(v string) OptString {
-	return OptString{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptString is optional string.
-type OptString struct {
-	Value string
-	Set   bool
-}
-
-// IsSet returns true if OptString was set.
-func (o OptString) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptString) Reset() {
-	var v string
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptString) SetTo(v string) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptString) Get() (v string, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptString) Or(d string) string {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
 }

@@ -782,10 +782,7 @@ func (c *Client) sendAPIV1CloudStorageMyGet(ctx context.Context, params APIV1Clo
 		}
 
 		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.Limit.Get(); ok {
-				return e.EncodeValue(conv.IntToString(val))
-			}
-			return nil
+			return e.EncodeValue(conv.IntToString(params.Limit))
 		}); err != nil {
 			return res, errors.Wrap(err, "encode query")
 		}
@@ -799,10 +796,7 @@ func (c *Client) sendAPIV1CloudStorageMyGet(ctx context.Context, params APIV1Clo
 		}
 
 		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.Page.Get(); ok {
-				return e.EncodeValue(conv.IntToString(val))
-			}
-			return nil
+			return e.EncodeValue(conv.IntToString(params.Page))
 		}); err != nil {
 			return res, errors.Wrap(err, "encode query")
 		}

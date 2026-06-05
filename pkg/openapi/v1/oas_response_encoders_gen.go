@@ -179,10 +179,10 @@ func encodeAPIV1CloudStorageMyUploadPostResponse(response APIV1CloudStorageMyUpl
 
 func encodeAPIV1CloudStorageMyUploadUploadIDCompletePostResponse(response APIV1CloudStorageMyUploadUploadIDCompletePostRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *APIV1CloudStorageMyUploadUploadIDCompletePostCreated:
+	case *APIV1CloudStorageMyUploadUploadIDCompletePostOK:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
-		w.WriteHeader(201)
-		span.SetStatus(codes.Ok, http.StatusText(201))
+		w.WriteHeader(200)
+		span.SetStatus(codes.Ok, http.StatusText(200))
 
 		e := new(jx.Encoder)
 		response.Encode(e)
