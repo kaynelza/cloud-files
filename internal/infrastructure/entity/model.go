@@ -35,4 +35,12 @@ type (
 		MimeType string `json:"mime_type"`
 		FilePath string `json:"file_path"`
 	}
+	UploadIDSession struct {
+		UploadID      string `json:"upload_id"`
+		Name          string `json:"name"`
+		Size          int    `json:"size"`
+		ReceivedBytes int    `json:"received_bytes"`
+		ChunkSize     int    `json:"chunk_size"`
+		ExpiresAt     string `json:"expires_at"`
+	}
 )
